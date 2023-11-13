@@ -8,7 +8,7 @@ const path = require("path");
  */
 
 function index (req, res) {
-    res.send(`<h1>Benvenuto nel mio blog</h1> <a href="/posts">Vai ai post</a>`)
+    res.send(`<h1>Benvenuto nel mio blog</h1> <a href="/posts">Vai ai post</a> <br> <a href="/posts/new">Crea nuovo post</a>`)
    
 }
 

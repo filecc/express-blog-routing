@@ -4,6 +4,8 @@ const postController = require("../controllers/post")
 
 
 router.get("/", postController.index)
+router.get("/new", postController.create)
 router.get("/:id", postController.show)
+
 
 module.exports = router

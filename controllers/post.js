@@ -55,16 +55,37 @@ function show (req, res) {
         res.send("Not found")
         return
     }
-    const html = `<h1>${post.title}</h1>
+    /* const html = `<h1>${post.title}</h1>
     <img style="max-width: 200px" src='/images${post.image}' />
             <p>${post.body}</p>
             <span>${post.tags.join(", ")}</span>
             <a  style='font-weoght: bold; display: block; padding: 1rem 0;' href="/posts">Torna alla lista dei post</a>`
 
-    res.send(html)
+    res.send(html) */
+    res.json(post)
 }
+
+/**
+ * @param {express.Request} req 
+ * @param {express.Response} res 
+ */
+
+function create (req, res) {
+    res.format({
+        html: () => {
+            res.send(`<h1>Creazione nuovo post</h1>`)
+        },
+        default: () => {
+            res.status(406).send("Not Acceptable")
+        }
+    }
+    )
+    
+}
+
 
 module.exports = {
     index,
-    show
+    show,
+    create
   }
