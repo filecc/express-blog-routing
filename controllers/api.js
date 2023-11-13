@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const env = require("dotenv").config();
 
-const port = process.env.PORT
-const host = process.env.HOST
+const port = process.env.PORT ?? ''
+const host = process.env.HOST.includes('localhost') ? 'localhost' : ('https://' + process.env.HOST + '/')
 
 const posts = JSON.parse(fs.readFileSync(path.resolve("./db/posts.json"), "utf8"))
 
