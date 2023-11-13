@@ -3,13 +3,14 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT
 
-const postController = require('./controllers/post')
+const homeController = require('./controllers/home')
+const postsRouter = require('./routers/posts')
 
-app.get('/', (req, res) => {
-  res.send(`<h1>Benvenuto nel mio blog</h1> <a href="/posts">Vai ai post</a>`)
-})
+app.use(express.static('public'))
 
-app.get('/posts', postController.index)
+app.get('/', homeController.index)
+
+app.use('/posts', postsRouter)
 
 app.listen(port ?? 3000, () => {
   console.log(`Server running at http://localhost:${port}`)

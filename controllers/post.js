@@ -10,13 +10,12 @@ const path = require("path");
 function index (req, res) {
     const posts = JSON.parse(fs.readFileSync(path.resolve("./db/posts.json"), "utf8"))
     const html = ['<ul>']
-    
 
     html.push(posts.map(
           (post) => 
           `<li>
-            <p style='font-weoght: bold;'>${post.title}</p>
-            <img style="max-width: 200px" src='${post.image}' />
+            <a href="/posts/${post.id}" style='font-weoght: bold; display: block; padding: 1rem 0;'>${post.title}</a>
+            <img style="max-width: 200px" src='/images${post.image}' />
             <p>${post.body}</p>
             <span>${post.tags.join(", ")}</span>
         </li>
@@ -43,6 +42,29 @@ function index (req, res) {
    
 }
 
+/**
+ * @param {express.Request} req 
+ * @param {express.Response} res 
+ */
+
+function show (req, res) {
+    const posts = JSON.parse(fs.readFileSync(path.resolve("./db/posts.json"), "utf8"))
+    const post = posts.find(post => post.id === req.params.id)
+    if (!post) {
+        res.status(404)
+        res.send("Not found")
+        return
+    }
+    const html = `<h1>${post.title}</h1>
+    <img style="max-width: 200px" src='/images${post.image}' />
+            <p>${post.body}</p>
+            <span>${post.tags.join(", ")}</span>
+            <a  style='font-weoght: bold; display: block; padding: 1rem 0;' href="/posts">Torna alla lista dei post</a>`
+
+    res.send(html)
+}
+
 module.exports = {
-    index
+    index,
+    show
   }
