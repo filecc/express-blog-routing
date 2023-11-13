@@ -1,7 +1,10 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const env = require("dotenv").config();
 
+const port = process.env.PORT
+const host = process.env.HOST
 /**
  * @param {express.Request} req 
  * @param {express.Response} res 
@@ -62,7 +65,9 @@ function show (req, res) {
             <a  style='font-weoght: bold; display: block; padding: 1rem 0;' href="/posts">Torna alla lista dei post</a>`
 
     res.send(html) */
-    res.json(post)
+    const imgPath = (`http://${host}:${port}/images${post.image}`)
+    const downloadLink= (`http://localhost:3000/posts/${post.slug}/download`)
+    res.json({...post, image_url: `${imgPath}`, download_link: `${downloadLink}`})
 }
 
 /**
@@ -83,9 +88,22 @@ function create (req, res) {
     
 }
 
+/**
+ * @param {express.Request} req 
+ * @param {express.Response} res 
+ */
+
+function download (req, res) {
+    const posts = JSON.parse(fs.readFileSync(path.resolve("./db/posts.json"), "utf8"))
+    const slug = req.params.slug
+    const image = posts.find(post => post.slug === slug).image
+    res.download(`./public/images${image}`)
+}
+
 
 module.exports = {
     index,
     show,
-    create
+    create,
+    download
   }
